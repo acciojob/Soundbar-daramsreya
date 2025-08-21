@@ -1,23 +1,23 @@
 //your JS code here. If required.
-const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
-
-    sounds.forEach(sound => {
-      const btn = document.querySelector(`.btn:nth-child(${sounds.indexOf(sound)+1})`);
-      
-      btn.addEventListener('click', () => {
-        stopSongs();
-        const audio = new Audio(`sounds/${sound}.mp3`);
-        audio.play();
-        window.currentAudio = audio; // store current audio globally
-      });
-    });
-
-    // stop button
-    document.querySelector('.stop').addEventListener('click', stopSongs);
+const buttons = document.querySelectorAll('.btn');
+    const audios = document.querySelectorAll('audio');
 
     function stopSongs() {
-      if (window.currentAudio) {
-        window.currentAudio.pause();
-        window.currentAudio.currentTime = 0;
-      }
+      audios.forEach(audio => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
     }
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const sound = button.getAttribute('data-sound');
+
+        if (sound) {
+          stopSongs();
+          document.getElementById(sound).play();
+        } else if (button.classList.contains('stop')) {
+          stopSongs();
+        }
+      });
+    });
